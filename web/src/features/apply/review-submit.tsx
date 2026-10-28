@@ -49,7 +49,7 @@ export function ReviewSubmit() {
       <h2 className="text-lg font-semibold">Step 5 — Review & submit</h2>
       <ResumeView profile={preview} />
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <div className="no-print flex gap-2">
+      <div className="no-print flex justify-end gap-2 mt-7">
         <Button variant="outline" onClick={() => dispatch(setStep(3))}>Back</Button>
         <Button disabled={status === 'submitting'} onClick={() => dispatch(submitApplication())}>
           {status === 'submitting' ? 'Submitting…' : 'Submit application'}
