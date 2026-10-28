@@ -26,16 +26,15 @@ export default function Home() {
           <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
             Build a thoughtful profile that brings your experience, education, and story together — all in one place.
           </p>
-          <div className="mt-9 flex flex-wrap items-center gap-3">
-            <Button asChild size="lg">
+
+          <div className="mt-9">
+            <Button asChild size="lg" className='uppercase tracking-widest'>
               <Link href="/apply">
-                Create your profile <ArrowRight className="size-4" />
+                Create my profile now <ArrowRight className="size-4" />
               </Link>
             </Button>
-            <Link href="/login" className="inline-flex items-center gap-2 rounded-xl px-4 py-3 text-sm font-semibold text-slate-600 transition-colors hover:bg-white hover:text-primary">
-              Staff sign in <ArrowDownRight className="size-4" />
-            </Link>
           </div>
+
           <div className="mt-12 flex flex-wrap items-center gap-x-7 gap-y-3 border-t border-slate-200/80 pt-6 text-sm text-slate-500">
             <span className="inline-flex items-center gap-2"><BadgeCheck className="size-4 text-emerald-600" /> Simple guided application</span>
             <span className="inline-flex items-center gap-2"><UserRound className="size-4 text-primary" /> No account needed</span>
