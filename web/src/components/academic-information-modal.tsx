@@ -1,20 +1,26 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from '@/components/ui/dialog';
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
+import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import { DEGREES } from '@/features/apply/constants';
 
-export type AcademicDraft = {
-  schoolName: string;
-  degree?: string | null;
-  fieldOfStudy?: string | null;
-  startDate?: string | null;
-  endDate?: string | null;
-  description?: string | null;
-};
+const schema = z.object({
+  schoolName: z.string().min(1),
+  degree: z.string().optional().nullable(),
+  fieldOfStudy: z.string().optional().nullable(),
+  startDate: z.string().optional().nullable(),
+  endDate: z.string().optional().nullable(),
+  description: z.string().optional().nullable(),
+});
+
+export type AcademicDraft = z.infer<typeof schema>;
 
 export function AcademicInformationModal({
   open,
@@ -27,11 +33,14 @@ export function AcademicInformationModal({
   initial: AcademicDraft | null;
   onSave: (draft: AcademicDraft) => void;
 }) {
-  const [draft, setDraft] = useState<AcademicDraft>(initial ?? { schoolName: '' });
+  const { register, handleSubmit, reset } = useForm<AcademicDraft>({
+    resolver: zodResolver(schema),
+    defaultValues: initial ?? { schoolName: '' },
+  });
 
   useEffect(() => {
-    if (open) setDraft(initial ?? { schoolName: '' });
-  }, [open, initial]);
+    if (open) reset(initial ?? { schoolName: '' });
+  }, [open, initial, reset]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -39,28 +48,27 @@ export function AcademicInformationModal({
         <DialogHeader>
           <DialogTitle>{initial ? 'Edit academic entry' : 'Add academic entry'}</DialogTitle>
         </DialogHeader>
-        <div className="space-y-3">
-          <Field label="School name"><Input value={draft.schoolName} onChange={(e) => setDraft({ ...draft, schoolName: e.target.value })} /></Field>
-          <Field label="Degree"><Input value={draft.degree ?? ''} onChange={(e) => setDraft({ ...draft, degree: e.target.value })} /></Field>
-          <Field label="Field of study"><Input value={draft.fieldOfStudy ?? ''} onChange={(e) => setDraft({ ...draft, fieldOfStudy: e.target.value })} /></Field>
-
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="Start date (month/year)"><Input type="month" value={(draft.startDate ?? '').slice(0, 7)} onChange={(e) => setDraft({ ...draft, startDate: e.target.value })} /></Field>
-            <Field label="End date (month/year)"><Input type="month" value={(draft.endDate ?? '').slice(0, 7)} onChange={(e) => setDraft({ ...draft, endDate: e.target.value })} /></Field>
-          </div>
-
-          <Field label="Description">
-            <Textarea
-              value={draft.description ?? ''}
-              rows={5}
-              onChange={(e) => setDraft({ ...draft, description: e.target.value })}
-            />
+        <form onSubmit={handleSubmit(onSave)} className="space-y-3">
+          <Field label="School name"><Input {...register('schoolName')} /></Field>
+          <Field label="Degree">
+            <Select {...register('degree')}>
+              <option value="">Select degree</option>
+              {DEGREES.map((d) => (
+                <option key={d} value={d}>{d}</option>
+              ))}
+            </Select>
           </Field>
-        </div>
-        <DialogFooter>
-          <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
-          <Button type="button" onClick={() => onSave(draft)}>Save</Button>
-        </DialogFooter>
+          <Field label="Field of study"><Input {...register('fieldOfStudy')} /></Field>
+          <div className="grid grid-cols-2 gap-3">
+            <Field label="Start date (month/year)"><Input type="month" {...register('startDate')} /></Field>
+            <Field label="End date (month/year)"><Input type="month" {...register('endDate')} /></Field>
+          </div>
+          <Field label="Description"><Textarea {...register('description')} /></Field>
+          <DialogFooter>
+            <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+            <Button type="submit">Save</Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

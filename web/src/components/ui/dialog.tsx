@@ -5,8 +5,8 @@ import { cn } from '@/lib/utils';
 export function Dialog({ open, onOpenChange, children }: { open: boolean; onOpenChange: (v: boolean) => void; children: React.ReactNode }) {
   if (!open) return null;
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40" onClick={() => onOpenChange(false)}>
-      <div onClick={(e) => e.stopPropagation()}>{children}</div>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 animate-in fade-in" onClick={() => onOpenChange(false)}>
+      <div className="animate-in zoom-in-95" onClick={(e) => e.stopPropagation()}>{children}</div>
     </div>
   );
 }

@@ -12,20 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-const DEGREES = [
-  'National Diploma',
-  'Higher National Diploma',
-  'B.Sc.',
-  'B.A.',
-  'B.Eng.',
-  'M.Sc.',
-  'M.A.',
-  'M.Eng.',
-  'Ph.D.',
-  'Associate Degree',
-  'Certificate',
-  'Other',
-];
+import { DEGREES } from '../constants';
 
 export function StepAcademics() {
   const dispatch = useAppDispatch();

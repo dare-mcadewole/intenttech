@@ -2,6 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { use, useEffect, useState } from 'react';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { z } from 'zod';
 import { AccountRole, type ProfileResponse, type UpdateProfileRequest } from '@repo/contracts';
 import { apiFetch } from '@/app/apiClient';
 import { RequireRole } from '@/features/auth/require-role';
@@ -11,9 +14,28 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
 import { AcademicInformationModal, type AcademicDraft } from '@/components/academic-information-modal';
 import { UsersRound } from 'lucide-react';
+
+const schema = z.object({
+  firstName: z.string().min(1),
+  lastName: z.string().min(1),
+  dateOfBirth: z.string().min(1),
+  occupation: z.string(),
+  gender: z.string(),
+  profilePhotoUrl: z.string().nullable().optional(),
+  email: z.string().email(),
+  phoneNumber: z.string(),
+  fax: z.string().nullable().optional(),
+  linkedinUrl: z.string().nullable().optional(),
+  addressLine: z.string(),
+  city: z.string(),
+  state: z.string(),
+  country: z.string(),
+  zipCode: z.string(),
+});
+
+type FormValues = z.infer<typeof schema>;
 
 export function ProfileEditClient({ id }: { id: string }) {
   const router = useRouter();
@@ -24,6 +46,81 @@ export function ProfileEditClient({ id }: { id: string }) {
   const [modalOpen, setModalOpen] = useState(false);
   const [draft, setDraft] = useState<AcademicDraft | null>(null);
   const [editingAcademicIndex, setEditingAcademicIndex] = useState<number | null>(null);
+
+  const { register, handleSubmit, reset } = useForm<FormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: {
+      firstName: '', lastName: '', dateOfBirth: '', occupation: '', gender: '', profilePhotoUrl: null,
+      email: '', phoneNumber: '', fax: null, linkedinUrl: null,
+      addressLine: '', city: '', state: '', country: '', zipCode: '',
+    },
+  });
+
+  useEffect(() => {
+    apiFetch<ProfileResponse>(`/users/${id}`)
+      .then((pr) => {
+        setProfile(pr);
+        setAcademics(pr.academics ?? []);
+        reset({
+          firstName: pr.info.firstName,
+          lastName: pr.info.lastName,
+          dateOfBirth: pr.info.dateOfBirth,
+          occupation: pr.info.occupation,
+          gender: pr.info.gender,
+          profilePhotoUrl: pr.info.profilePhotoUrl ?? null,
+          email: pr.contact.email,
+          phoneNumber: pr.contact.phoneNumber,
+          fax: pr.contact.fax ?? null,
+          linkedinUrl: pr.contact.linkedinUrl ?? null,
+          addressLine: pr.address.addressLine,
+          city: pr.address.city,
+          state: pr.address.state,
+          country: pr.address.country,
+          zipCode: pr.address.zipCode,
+        });
+      })
+      .catch((e) => setError(e.message));
+  }, [id, reset]);
+
+  async function onSubmit(values: FormValues) {
+    if (!profile) return;
+    const body: UpdateProfileRequest = {
+      info: {
+        firstName: values.firstName,
+        lastName: values.lastName,
+        dateOfBirth: values.dateOfBirth,
+        occupation: values.occupation,
+        gender: values.gender as never,
+        profilePhotoUrl: values.profilePhotoUrl ?? null,
+      },
+      contact: {
+        email: values.email,
+        phoneNumber: values.phoneNumber,
+        fax: values.fax ?? null,
+        linkedinUrl: values.linkedinUrl ?? null,
+      },
+      address: {
+        addressLine: values.addressLine,
+        city: values.city,
+        state: values.state,
+        country: values.country,
+        zipCode: values.zipCode,
+      },
+    };
+    setSaving(true);
+    try {
+      const updated = await apiFetch<ProfileResponse>(`/users/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify(body),
+      });
+      setProfile(updated);
+      router.push(`/profiles/${id}`);
+    } catch (err) {
+      setError((err as Error).message);
+    } finally {
+      setSaving(false);
+    }
+  }
 
   async function handleSaveAcademic(d: AcademicDraft) {
     const formatted = {
@@ -46,54 +143,6 @@ export function ProfileEditClient({ id }: { id: string }) {
       setProfile(updated);
       setAcademics(updated.academics ?? []);
     } catch (err) { setError((err as Error).message); }
-  }
-
-  useEffect(() => {
-    apiFetch<ProfileResponse>(`/users/${id}`)
-      .then((pr) => { setProfile(pr); setAcademics(pr.academics ?? []); })
-      .catch((e) => setError(e.message));
-  }, [id]);
-
-  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
-    e.preventDefault();
-    if (!profile) return;
-    const fd = new FormData(e.currentTarget);
-    const body: UpdateProfileRequest = {
-      info: {
-        firstName: String(fd.get('firstName') ?? ''),
-        lastName: String(fd.get('lastName') ?? ''),
-        dateOfBirth: String(fd.get('dateOfBirth') ?? ''),
-        occupation: String(fd.get('occupation') ?? ''),
-        gender: String(fd.get('gender') ?? '') as never,
-        profilePhotoUrl: (fd.get('profilePhotoUrl') as string) || null,
-      },
-      contact: {
-        email: String(fd.get('email') ?? ''),
-        phoneNumber: String(fd.get('phoneNumber') ?? ''),
-        fax: (fd.get('fax') as string) || null,
-        linkedinUrl: (fd.get('linkedinUrl') as string) || null,
-      },
-      address: {
-        addressLine: String(fd.get('addressLine') ?? ''),
-        city: String(fd.get('city') ?? ''),
-        state: String(fd.get('state') ?? ''),
-        country: String(fd.get('country') ?? ''),
-        zipCode: String(fd.get('zipCode') ?? ''),
-      },
-    };
-    setSaving(true);
-    try {
-      const updated = await apiFetch<ProfileResponse>(`/users/${id}`, {
-        method: 'PATCH',
-        body: JSON.stringify(body),
-      });
-      setProfile(updated);
-      router.push(`/profiles/${id}`);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setSaving(false);
-    }
   }
 
   if (error) return <p className="p-6 text-sm text-destructive">{error}</p>;
@@ -119,38 +168,38 @@ export function ProfileEditClient({ id }: { id: string }) {
           <CardDescription>Update all profile fields below.</CardDescription>
         </CardHeader>
         <CardContent className="pt-6">
-          <form className="space-y-6" onSubmit={handleSubmit}>
+          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
             <h3 className="font-semibold">Personal info</h3>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="First name"><Input name="firstName" defaultValue={p.info.firstName} /></Field>
-              <Field label="Last name"><Input name="lastName" defaultValue={p.info.lastName} /></Field>
+              <Field label="First name"><Input {...register('firstName')} /></Field>
+              <Field label="Last name"><Input {...register('lastName')} /></Field>
             </div>
-            <Field label="Date of birth"><Input type="date" name="dateOfBirth" defaultValue={p.info.dateOfBirth} /></Field>
-            <Field label="Occupation"><Input name="occupation" defaultValue={p.info.occupation} /></Field>
+            <Field label="Date of birth"><Input type="date" {...register('dateOfBirth')} /></Field>
+            <Field label="Occupation"><Input {...register('occupation')} /></Field>
             <Field label="Gender">
-              <Select name="gender" defaultValue={p.info.gender}>
+              <Select {...register('gender')}>
                 <option value="MALE">MALE</option>
                 <option value="FEMALE">FEMALE</option>
                 <option value="PREFER_NOT_TO_SAY">PREFER_NOT_TO_SAY</option>
               </Select>
             </Field>
-            <Field label="Profile photo URL"><Input name="profilePhotoUrl" defaultValue={p.info.profilePhotoUrl ?? ''} /></Field>
+            <Field label="Profile photo URL"><Input {...register('profilePhotoUrl')} /></Field>
 
             <h3 className="font-semibold">Contact</h3>
-            <Field label="Email"><Input name="email" defaultValue={p.contact.email} /></Field>
-            <Field label="Phone number"><Input name="phoneNumber" defaultValue={p.contact.phoneNumber} /></Field>
-            <Field label="Fax"><Input name="fax" defaultValue={p.contact.fax ?? ''} /></Field>
-            <Field label="LinkedIn URL"><Input name="linkedinUrl" defaultValue={p.contact.linkedinUrl ?? ''} /></Field>
+            <Field label="Email"><Input {...register('email')} /></Field>
+            <Field label="Phone number"><Input {...register('phoneNumber')} /></Field>
+            <Field label="Fax"><Input {...register('fax')} /></Field>
+            <Field label="LinkedIn URL"><Input {...register('linkedinUrl')} /></Field>
 
             <h3 className="font-semibold">Address</h3>
-            <Field label="Street address"><Input name="addressLine" defaultValue={p.address.addressLine} /></Field>
+            <Field label="Street address"><Input {...register('addressLine')} /></Field>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="City"><Input name="city" defaultValue={p.address.city} /></Field>
-              <Field label="State"><Input name="state" defaultValue={p.address.state} /></Field>
+              <Field label="City"><Input {...register('city')} /></Field>
+              <Field label="State"><Input {...register('state')} /></Field>
             </div>
             <div className="grid grid-cols-2 gap-3">
-              <Field label="Country"><Input name="country" defaultValue={p.address.country} /></Field>
-              <Field label="Zip code"><Input name="zipCode" defaultValue={p.address.zipCode} /></Field>
+              <Field label="Country"><Input {...register('country')} /></Field>
+              <Field label="Zip code"><Input {...register('zipCode')} /></Field>
             </div>
 
             <h3 className="font-semibold">Academics</h3>
@@ -172,20 +221,17 @@ export function ProfileEditClient({ id }: { id: string }) {
               + Add academic entry
             </Button>
 
-            <AcademicInformationModal
-              open={modalOpen}
-              onOpenChange={setModalOpen}
-              initial={draft}
-              onSave={handleSaveAcademic}
-            />
-
-            <Field label="Notes"><Textarea name="notes" defaultValue="" /></Field>
-
             {error && <p className="text-sm text-destructive">{error}</p>}
             <Button disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
           </form>
         </CardContent>
       </Card>
+      <AcademicInformationModal
+        open={modalOpen}
+        onOpenChange={setModalOpen}
+        initial={draft}
+        onSave={handleSaveAcademic}
+      />
     </div>
   );
 }
