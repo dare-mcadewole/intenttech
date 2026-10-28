@@ -6,6 +6,7 @@ import { setStep, submitApplication } from './applySlice';
 import { ResumeView } from '@/components/resume-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useCallback } from 'react';
 
 /**
  * Final wizard steps: resume preview (read from local form state — no public GET),
@@ -13,9 +14,21 @@ import { Card, CardContent } from '@/components/ui/card';
  */
 export function ReviewSubmit() {
   const dispatch = useAppDispatch();
-  const { info, contact, address, academics, status, error, result } = useAppSelector(
+  const {
+    info,
+    contact,
+    address,
+    academics,
+    status,
+    error,
+    result
+  } = useAppSelector(
     (s) => s.apply,
   );
+
+  const reloadPage = useCallback(() => {
+    window.location.reload()
+  }, [])
 
   if (result) {
     return (
@@ -26,8 +39,15 @@ export function ReviewSubmit() {
             <p className="text-sm text-muted-foreground">Reference ID: {result.id}</p>
           </CardContent>
         </Card>
+
         <ResumeView profile={result} />
-        <Link className="text-sm underline" href="/apply">Submit another</Link>
+
+        <button
+          onClick={reloadPage}
+          className="text-sm underline cursor-pointer hover:opacity-75"
+        >
+          Submit another
+        </button>
       </div>
     );
   }
