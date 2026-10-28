@@ -36,6 +36,16 @@ export function StepAcademics() {
   });
   const { fields, append, remove } = useFieldArray({ control, name: 'items' });
 
+  const submitAcademics = handleSubmit((v) => {
+    const items = v.items.map((it) => ({
+      ...it,
+      startDate: it.startDate ? `${it.startDate}-01` : it.startDate,
+      endDate: it.endDate ? `${it.endDate}-01` : it.endDate,
+    }));
+    dispatch(saveAcademics(items));
+    dispatch(setStep(4));
+  })
+
   return (
     <Card>
       <CardHeader>
@@ -43,10 +53,7 @@ export function StepAcademics() {
       </CardHeader>
       <CardContent>
         <form
-          onSubmit={handleSubmit((v) => {
-            dispatch(saveAcademics(v.items));
-            dispatch(setStep(4));
-          })}
+          onSubmit={submitAcademics}
           className="space-y-4"
         >
           {fields.map((f, i) => (
