@@ -15,7 +15,7 @@ export function AdminClient() {
   return (
     <RequireRole allowed={[AccountRole.ADMIN, AccountRole.EDITOR]}>
       <main className="mx-auto max-w-6xl space-y-8 px-5 py-8 sm:px-8 sm:py-10">
-        <section className="relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_65px_-30px_rgba(30,41,95,0.55)] sm:p-10">
+        <section className="!hidden relative overflow-hidden rounded-[2rem] bg-slate-950 p-7 text-white shadow-[0_24px_65px_-30px_rgba(30,41,95,0.55)] sm:p-10">
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_85%_15%,rgba(99,102,241,0.58),transparent_44%),radial-gradient(ellipse_at_10%_100%,rgba(20,184,166,0.22),transparent_42%)]" />
           <div className="absolute -right-10 -top-20 size-72 rounded-full border border-white/10" />
           <div className="absolute -right-3 -top-12 size-56 rounded-full border border-white/10" />
@@ -52,7 +52,7 @@ export function AdminClient() {
                 <BadgeCheck className="size-5 text-emerald-500" />
               </CardHeader>
               <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-                <CardTitle className="text-base">Profile directory</CardTitle>
+                <CardTitle className="text-xl">Profile directory</CardTitle>
                 <CardDescription className="mt-2 max-w-sm leading-6">Search submissions, open detailed profiles, and manage each person’s information.</CardDescription>
                 <Link href="/profiles" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   View submissions <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -66,7 +66,7 @@ export function AdminClient() {
                 <ShieldCheck className="size-5 text-teal-600" />
               </CardHeader>
               <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-                <CardTitle className="text-base">Review & export</CardTitle>
+                <CardTitle className="text-xl">Review & export</CardTitle>
                 <CardDescription className="mt-2 max-w-sm leading-6">Open a resume view to get a closer look, then export a polished PDF or DOCX.</CardDescription>
                 <Link href="/profiles" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   Explore profiles <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
