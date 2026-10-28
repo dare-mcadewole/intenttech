@@ -17,7 +17,9 @@ export function StepInfo() {
   const saved = useAppSelector((s) => s.apply.info);
   const { register, handleSubmit, formState: { errors } } = useForm<InfoForm>({
     resolver: zodResolver(infoSchema),
-    defaultValues: saved ?? { gender: Gender.PREFER_NOT_TO_SAY },
+    defaultValues: saved ?? {
+      gender: '' as Gender
+    },
   });
 
   return (
