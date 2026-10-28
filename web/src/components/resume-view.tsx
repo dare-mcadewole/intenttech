@@ -10,7 +10,7 @@ import { Card, CardContent } from '@/components/ui/card';
 export function ResumeView({ profile }: { profile: ProfileResponse }) {
   const { info, contact, address, academics } = profile;
   return (
-    <Card className="mx-auto max-w-2xl">
+    <Card className="mx-auto max-w-3xl">
       <CardContent className="p-8">
         <header className="flex items-start gap-4 border-b pb-4">
           {info.profilePhotoUrl && (
