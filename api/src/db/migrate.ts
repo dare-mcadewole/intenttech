@@ -10,7 +10,7 @@ import { Pool } from 'pg';
 
 async function main() {
   const pool = new Pool({ connectionString: process.env.DATABASE_URL });
-  const file = join(__dirname, '..', '..', '..', 'drizzle', 'init.sql');
+  const file = join(__dirname, '..', '..', 'drizzle', 'init.sql');
   const sql = await readFile(file, 'utf8');
   await pool.query(sql);
   await pool.end();
