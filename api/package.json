@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "nest start --watch",
+    "dev": "nest start --watch --entryFile api/src/main --exec tsx",
     "build": "nest build",
-    "start": "node dist/main.js",
+    "start": "tsx dist/api/src/main.js",
     "lint": "echo 'api: lint not configured yet'",
     "typecheck": "tsc --noEmit -p tsconfig.json",
     "db:generate": "drizzle-kit generate",
