@@ -110,5 +110,12 @@ export const userInfoRelations = relations(userInfos, ({ one, many }) => ({
   academics: many(userAcademics),
 }));
 
+export const userAcademicsRelations = relations(userAcademics, ({ one }) => ({
+  userInfo: one(userInfos, {
+    fields: [userAcademics.userId],
+    references: [userInfos.id]
+  })
+}))
+
 export type UserInfoRow = typeof userInfos.$inferSelect;
 export type NewUserInfo = typeof userInfos.$inferInsert;
