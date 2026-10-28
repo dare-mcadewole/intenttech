@@ -50,7 +50,8 @@ export function StepAddress() {
               <Input id="zipCode" {...register('zipCode')} />
             </Field>
           </div>
-          <div className="flex gap-2">
+
+          <div className="flex justify-end gap-2 mt-7">
             <Button type="button" variant="outline" onClick={() => dispatch(setStep(1))}>Back</Button>
             <Button>Continue</Button>
           </div>

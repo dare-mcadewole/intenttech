@@ -6,6 +6,7 @@ import { setStep, submitApplication } from './applySlice';
 import { ResumeView } from '@/components/resume-view';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
+import { useCallback } from 'react';
 
 /**
  * Final wizard steps: resume preview (read from local form state — no public GET),
@@ -13,9 +14,21 @@ import { Card, CardContent } from '@/components/ui/card';
  */
 export function ReviewSubmit() {
   const dispatch = useAppDispatch();
-  const { info, contact, address, academics, status, error, result } = useAppSelector(
+  const {
+    info,
+    contact,
+    address,
+    academics,
+    status,
+    error,
+    result
+  } = useAppSelector(
     (s) => s.apply,
   );
+
+  const reloadPage = useCallback(() => {
+    window.location.reload()
+  }, [])
 
   if (result) {
     return (
@@ -26,8 +39,15 @@ export function ReviewSubmit() {
             <p className="text-sm text-muted-foreground">Reference ID: {result.id}</p>
           </CardContent>
         </Card>
+
         <ResumeView profile={result} />
-        <Link className="text-sm underline" href="/apply">Submit another</Link>
+
+        <button
+          onClick={reloadPage}
+          className="text-sm underline cursor-pointer hover:opacity-75"
+        >
+          Submit another
+        </button>
       </div>
     );
   }
@@ -49,7 +69,7 @@ export function ReviewSubmit() {
       <h2 className="text-lg font-semibold">Step 5 — Review & submit</h2>
       <ResumeView profile={preview} />
       {error && <p className="text-sm text-destructive">{error}</p>}
-      <div className="no-print flex gap-2">
+      <div className="no-print flex justify-end gap-2 mt-7">
         <Button variant="outline" onClick={() => dispatch(setStep(3))}>Back</Button>
         <Button disabled={status === 'submitting'} onClick={() => dispatch(submitApplication())}>
           {status === 'submitting' ? 'Submitting…' : 'Submit application'}

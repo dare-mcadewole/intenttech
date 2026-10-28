@@ -12,20 +12,7 @@ import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
 
-const DEGREES = [
-  'National Diploma',
-  'Higher National Diploma',
-  'B.Sc.',
-  'B.A.',
-  'B.Eng.',
-  'M.Sc.',
-  'M.A.',
-  'M.Eng.',
-  'Ph.D.',
-  'Associate Degree',
-  'Certificate',
-  'Other',
-];
+import { DEGREES } from '../constants';
 
 export function StepAcademics() {
   const dispatch = useAppDispatch();
@@ -95,7 +82,7 @@ export function StepAcademics() {
           <Button type="button" variant="outline" onClick={() => append({ schoolName: '' })}>
             + Add school
           </Button>
-          <div className="flex gap-2">
+          <div className="flex justify-end gap-2 mt-7">
             <Button type="button" variant="outline" onClick={() => dispatch(setStep(2))}>Back</Button>
             <Button>Review</Button>
           </div>

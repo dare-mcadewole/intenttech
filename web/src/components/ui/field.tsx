@@ -13,7 +13,7 @@ export interface FieldProps {
 export function Field({ label, htmlFor, hint, error, className, children }: FieldProps) {
   return (
     <div className={cn('space-y-1', className)}>
-      {label ? <label htmlFor={htmlFor} className="text-sm font-medium leading-none">{label}</label> : null}
+      {label ? <label htmlFor={htmlFor} className="text-sm font-medium leading-none inline-block mb-2">{label}</label> : null}
       {children}
       {hint && !error ? <p className="text-sm text-muted-foreground">{hint}</p> : null}
       {error ? <p className="text-sm text-destructive">{error}</p> : null}
