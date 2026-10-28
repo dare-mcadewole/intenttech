@@ -90,8 +90,8 @@
 
   .apply-step-card > div {
     overflow: hidden;
-    border-color: oklch(1 0 0 / 85%);
-    background: oklch(1 0 0 / 92%);
+    /* border-color: oklch(1 0 0 / 85%);
+    background: oklch(1 0 0 / 92%); */
   }
 
   .apply-step-card > div > div:first-child {
