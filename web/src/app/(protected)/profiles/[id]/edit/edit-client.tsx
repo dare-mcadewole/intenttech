@@ -5,7 +5,7 @@ import { use, useEffect, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { AccountRole, type ProfileResponse, type UpdateProfileRequest } from '@repo/contracts';
+import { AccountRole, ProfileAcademic, type ProfileResponse, type UpdateProfileRequest } from '@repo/contracts';
 import { apiFetch } from '@/app/apiClient';
 import { RequireRole } from '@/features/auth/require-role';
 import { useAppSelector } from '@/features/auth/hooks';
@@ -131,7 +131,14 @@ export function ProfileEditClient({ id }: { id: string }) {
       endDate: d.endDate ? `${d.endDate}-01` : null,
       description: d.description ?? null,
     };
-    const next: any[] = [...academics];
+    const strippedAcademics = academics.map((a) => {
+      const academic = a as Partial<ProfileAcademic>
+      delete academic.id;
+      delete academic.sortOrder
+      return academic;
+    })
+    const next: any[] = [...strippedAcademics];
+    console.log('FORMATTED & ACADEMICS:', formatted, strippedAcademics)
     if (editingAcademicIndex === null) next.push(formatted);
     else next[editingAcademicIndex] = formatted;
     setAcademics(next);
