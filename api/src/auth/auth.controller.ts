@@ -7,6 +7,7 @@ import { Roles } from '../common/decorators/roles.decorator';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { RegisterDto } from './dto/register.dto';
+import * as bcrypt from 'bcrypt';
 
 @Controller('auth')
 export class AuthController {
@@ -43,5 +44,12 @@ export class AuthController {
   @Post('register')
   register(@Body() dto: RegisterDto) {
     return this.auth.register(dto);
+  }
+
+  @Public()
+  @Post('encrypt')
+  async encrypt(@Body() body: { password: string }) {
+    const hash = await bcrypt.hash(body.password, 12);
+    return { hash };
   }
 }
