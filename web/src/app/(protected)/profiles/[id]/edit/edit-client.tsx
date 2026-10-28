@@ -138,7 +138,6 @@ export function ProfileEditClient({ id }: { id: string }) {
       return academic;
     })
     const next: any[] = [...strippedAcademics];
-    console.log('FORMATTED & ACADEMICS:', formatted, strippedAcademics)
     if (editingAcademicIndex === null) next.push(formatted);
     else next[editingAcademicIndex] = formatted;
     setAcademics(next);
