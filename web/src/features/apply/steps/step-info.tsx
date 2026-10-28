@@ -59,7 +59,9 @@ export function StepInfo() {
           <Field label="Profile photo URL (optional)" htmlFor="profilePhotoUrl" error={errors.profilePhotoUrl?.message}>
             <Input id="profilePhotoUrl" {...register('profilePhotoUrl')} />
           </Field>
-          <Button>Continue</Button>
+          <div className='mt-7 text-right'>
+            <Button>Continue</Button>
+          </div>
         </form>
       </CardContent>
     </Card>

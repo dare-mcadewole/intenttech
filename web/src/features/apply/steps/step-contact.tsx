@@ -43,7 +43,8 @@ export function StepContact() {
           <Field label="LinkedIn URL (optional)" htmlFor="linkedinUrl" error={errors.linkedinUrl?.message}>
             <Input id="linkedinUrl" {...register('linkedinUrl')} />
           </Field>
-          <div className="flex gap-2">
+
+          <div className="flex gap-2 justify-end mt-7">
             <Button type="button" variant="outline" onClick={() => dispatch(setStep(0))}>Back</Button>
             <Button>Continue</Button>
           </div>
