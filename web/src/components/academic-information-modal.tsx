@@ -22,6 +22,15 @@ const schema = z.object({
 
 export type AcademicDraft = z.infer<typeof schema>;
 
+const defaults: AcademicDraft = {
+  schoolName: '',
+  degree: '',
+  fieldOfStudy: '',
+  startDate: null,
+  endDate: null,
+  description: ''
+}
+
 export function AcademicInformationModal({
   open,
   onOpenChange,
@@ -38,12 +47,12 @@ export function AcademicInformationModal({
       ...initial,
       startDate: initial.startDate?.replace(/\-\d+$/g, ''),
       endDate: initial.endDate?.replace(/\-\d+$/g, ''),
-    }) : null
+    }) : defaults
   }, [initial])
 
   const { register, handleSubmit, reset } = useForm<AcademicDraft>({
     resolver: zodResolver(schema),
-    defaultValues: initialValues ?? { schoolName: '' },
+    defaultValues: initialValues,
   });
 
   useEffect(() => {
