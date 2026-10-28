@@ -222,16 +222,20 @@ export function ProfileEditClient({ id }: { id: string }) {
                 </div>
               ))}
               {academics.length === 0 && <p className="text-sm text-muted-foreground">No academic entries.</p>}
+              <Button type="button" variant="outline" size="sm" onClick={() => { setEditingAcademicIndex(null); setDraft(null); setModalOpen(true); }}>
+                + Add academic entry
+              </Button>
             </div>
-            <Button type="button" variant="outline" size="sm" onClick={() => { setEditingAcademicIndex(null); setDraft(null); setModalOpen(true); }}>
-              + Add academic entry
-            </Button>
 
             {error && <p className="text-sm text-destructive">{error}</p>}
-            <Button disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
+
+            <div className='text-right'>
+              <Button disabled={saving}>{saving ? 'Saving…' : 'Save'}</Button>
+            </div>
           </form>
         </CardContent>
       </Card>
+
       <AcademicInformationModal
         open={modalOpen}
         onOpenChange={setModalOpen}
