@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowUpRight, Sparkles } from 'lucide-react';
+import { Sparkles, UserRound } from 'lucide-react';
 
 export default function PublicLayout({ children }: { children: React.ReactNode }) {
   return (
@@ -19,13 +19,20 @@ export default function PublicLayout({ children }: { children: React.ReactNode }
               href="/apply"
               className="rounded-full px-4 py-2 text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-950"
             >
-              Apply
+              Apply Now
             </Link>
-            <Link
-              href="/login"
-              className="group inline-flex items-center gap-2 rounded-full bg-slate-950 px-4 py-2.5 text-white shadow-md shadow-slate-900/10 transition-all hover:bg-primary"
-            >
-              Staff sign in <ArrowUpRight className="size-4 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            <Link href="/login" className="
+              group inline-flex items-center justify-center gap-2 rounded-full
+              bg-slate-950 size-8 md:size-auto md:px-4 md:py-2.5 text-white shadow-md
+              shadow-slate-900/10 transition-all hover:bg-primary
+            ">
+              <span className='hidden md:inline'>
+                Sign in as admin
+              </span>
+              <UserRound className="
+                size-4 transition-transform group-hover:translate-x-0.5
+                group-hover:-translate-y-0.5
+              " />
             </Link>
           </nav>
         </div>
