@@ -35,20 +35,32 @@ export function StepInfo() {
           })}
           className="space-y-3"
         >
-          <div className="grid grid-cols-2 gap-3">
-            <Field label="First name" htmlFor="firstName" error={errors.firstName?.message}>
+          <div className="grid md:grid-cols-2 gap-3">
+            <Field
+              label="First name"
+              htmlFor="firstName"
+              error={errors.firstName?.message}
+            >
               <Input id="firstName" {...register('firstName')} />
             </Field>
-            <Field label="Last name" htmlFor="lastName" error={errors.lastName?.message}>
+
+            <Field
+              label="Last name"
+              htmlFor="lastName"
+              error={errors.lastName?.message}
+            >
               <Input id="lastName" {...register('lastName')} />
             </Field>
           </div>
+
           <Field label="Date of birth" htmlFor="dateOfBirth" error={errors.dateOfBirth?.message}>
             <Input id="dateOfBirth" type="date" {...register('dateOfBirth')} />
           </Field>
+
           <Field label="Occupation" htmlFor="occupation" error={errors.occupation?.message}>
             <Input id="occupation" {...register('occupation')} />
           </Field>
+
           <Field label="Gender" htmlFor="gender">
             <Select id="gender" {...register('gender')}>
               {Object.values(Gender).map((g) => (
@@ -56,9 +68,11 @@ export function StepInfo() {
               ))}
             </Select>
           </Field>
+
           <Field label="Profile photo URL (optional)" htmlFor="profilePhotoUrl" error={errors.profilePhotoUrl?.message}>
             <Input id="profilePhotoUrl" {...register('profilePhotoUrl')} />
           </Field>
+
           <div className='mt-7 text-right'>
             <Button>Continue</Button>
           </div>
