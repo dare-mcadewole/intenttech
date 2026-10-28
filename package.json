@@ -1,0 +1,28 @@
+{
+  "name": "intenttech",
+  "private": true,
+  "packageManager": "pnpm@9.7.0",
+  "workspaces": [
+    "api",
+    "web",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "turbo run dev --parallel",
+    "dev:api": "pnpm --filter @repo/api dev",
+    "dev:web": "pnpm --filter @repo/web dev",
+    "build": "turbo run build",
+    "lint": "turbo run lint",
+    "typecheck": "turbo run typecheck",
+    "db:generate": "pnpm --filter @repo/api db:generate",
+    "db:migrate": "pnpm --filter @repo/api db:migrate",
+    "db:seed": "pnpm --filter @repo/api db:seed"
+  },
+  "devDependencies": {
+    "turbo": "^2.4.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}
