@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/features/auth/hooks';
 import { fetchSession, logout } from '@/features/auth/authSlice';
 import { AccountRole } from '@repo/contracts';
 import { Button } from '@/components/ui/button';
-import { ArrowUpRight, LayoutDashboard, LogOut, Shield, Sparkles, Users, UsersRound } from 'lucide-react';
+import { ArrowUpRight, Hexagon, LayoutDashboard, LogOut, Shield, Sparkles, Users, UsersRound } from 'lucide-react';
 
 /**
  * Protected shell: requires a session (backend guards stay authoritative).
@@ -35,10 +35,9 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
 
   const canWrite = session?.role === AccountRole.ADMIN || session?.role === AccountRole.EDITOR;
   const navClass = (active: boolean) =>
-    `group flex shrink-0 items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${
-      active
-        ? 'bg-indigo-50 text-primary'
-        : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
+    `group flex shrink-0 items-center gap-3 rounded-xl px-3.5 py-2.5 text-sm font-medium transition-colors ${active
+      ? 'bg-indigo-50 text-primary'
+      : 'text-slate-500 hover:bg-slate-50 hover:text-slate-900'
     }`;
 
   return (
@@ -47,7 +46,7 @@ export default function ProtectedLayout({ children }: { children: React.ReactNod
         <div className="flex items-center justify-between px-5 py-4 lg:px-6 lg:py-7">
           <Link href="/profiles" className="group flex items-center gap-3">
             <span className="flex size-10 items-center justify-center rounded-2xl bg-slate-950 text-white shadow-lg shadow-slate-950/15 transition-transform group-hover:rotate-[-6deg]">
-              <Sparkles className="size-5" />
+              <Hexagon className="size-5" />
             </span>
             <span>
               <span className="block text-sm font-bold tracking-tight text-slate-950">IntentTech</span>

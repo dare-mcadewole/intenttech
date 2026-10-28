@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { ArrowLeft, ArrowRight, BadgeCheck, LockKeyhole, ShieldCheck, Sparkles } from 'lucide-react';
+import { ArrowLeft, ArrowRight, BadgeCheck, Hexagon, LockKeyhole, ShieldCheck } from 'lucide-react';
 import { useAppDispatch, useAppSelector } from '@/features/auth/hooks';
 import { login } from '@/features/auth/authSlice';
 import { Button } from '@/components/ui/button';
@@ -31,7 +31,7 @@ export function LoginClient() {
         <div className="absolute -right-20 top-24 size-72 rounded-full border border-white/10" />
         <div className="absolute -right-8 top-36 size-48 rounded-full border border-white/10" />
         <Link href="/" className="relative inline-flex items-center gap-3 text-sm font-semibold">
-          <span className="flex size-10 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15"><Sparkles className="size-5 text-cyan-200" /></span>
+          <span className="flex size-10 items-center justify-center rounded-2xl bg-white/10 ring-1 ring-white/15"><Hexagon className="size-5 text-cyan-200" /></span>
           IntentTech
         </Link>
         <div className="relative max-w-md">
