@@ -7,9 +7,25 @@ import { saveAcademics, setStep } from '../applySlice';
 import { academicsSchema, type AcademicsForm } from '../schemas';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Field } from '@/components/ui/field';
 import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { Select } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+
+const DEGREES = [
+  'National Diploma',
+  'Higher National Diploma',
+  'B.Sc.',
+  'B.A.',
+  'B.Eng.',
+  'M.Sc.',
+  'M.A.',
+  'M.Eng.',
+  'Ph.D.',
+  'Associate Degree',
+  'Certificate',
+  'Other',
+];
 
 export function StepAcademics() {
   const dispatch = useAppDispatch();
@@ -35,34 +51,33 @@ export function StepAcademics() {
         >
           {fields.map((f, i) => (
             <div key={f.id} className="space-y-2 rounded-md border p-3">
-              <div className="space-y-1">
-                <Label>School name *</Label>
+              <Field label="School name *">
                 <Input {...register(`items.${i}.schoolName`)} />
-              </div>
+              </Field>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <Label>Degree</Label>
-                  <Input {...register(`items.${i}.degree`)} />
-                </div>
-                <div className="space-y-1">
-                  <Label>Field of study</Label>
+                <Field label="Degree">
+                  <Select {...register(`items.${i}.degree`)}>
+                    <option value="">Select degree</option>
+                    {DEGREES.map((d) => (
+                      <option key={d} value={d}>{d}</option>
+                    ))}
+                  </Select>
+                </Field>
+                <Field label="Field of study">
                   <Input {...register(`items.${i}.fieldOfStudy`)} />
-                </div>
+                </Field>
               </div>
               <div className="grid grid-cols-2 gap-3">
-                <div className="space-y-1">
-                  <Label>Start date</Label>
-                  <Input type="date" {...register(`items.${i}.startDate`)} />
-                </div>
-                <div className="space-y-1">
-                  <Label>End date</Label>
-                  <Input type="date" {...register(`items.${i}.endDate`)} />
-                </div>
+                <Field label="Start date (month/year)">
+                  <Input type="month" {...register(`items.${i}.startDate`)} />
+                </Field>
+                <Field label="End date (month/year)">
+                  <Input type="month" {...register(`items.${i}.endDate`)} />
+                </Field>
               </div>
-              <div className="space-y-1">
-                <Label>Description</Label>
+              <Field label="Description">
                 <Textarea {...register(`items.${i}.description`)} />
-              </div>
+              </Field>
               {fields.length > 1 && (
                 <Button type="button" variant="ghost" size="sm" className="text-destructive" onClick={() => remove(i)}>
                   Remove
