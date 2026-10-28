@@ -1,5 +1,5 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useMemo } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
@@ -33,14 +33,22 @@ export function AcademicInformationModal({
   initial: AcademicDraft | null;
   onSave: (draft: AcademicDraft) => void;
 }) {
+  const initialValues = useMemo(() => {
+    return initial ? ({
+      ...initial,
+      startDate: initial.startDate?.replace(/\-\d+$/g, ''),
+      endDate: initial.endDate?.replace(/\-\d+$/g, ''),
+    }) : null
+  }, [initial])
+
   const { register, handleSubmit, reset } = useForm<AcademicDraft>({
     resolver: zodResolver(schema),
-    defaultValues: initial ?? { schoolName: '' },
+    defaultValues: initialValues ?? { schoolName: '' },
   });
 
   useEffect(() => {
-    if (open) reset(initial ?? { schoolName: '' });
-  }, [open, initial, reset]);
+    if (open) reset(initialValues ?? { schoolName: '' });
+  }, [open, initialValues, reset]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
