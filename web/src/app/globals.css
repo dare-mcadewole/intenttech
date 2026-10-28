@@ -105,8 +105,219 @@
   }
 }
 
+@layer components {
+  .resume-sheet {
+    box-sizing: border-box;
+    width: min(210mm, 100%);
+    min-height: 297mm;
+    padding: 19mm 20mm;
+    color: #172033;
+    background: #fff;
+    border: 1px solid #e5e9f0;
+    border-radius: 0.25rem;
+    box-shadow: 0 24px 70px -32px rgb(15 23 42 / 35%);
+    font-family: var(--font-inter), Inter, Arial, sans-serif;
+    font-size: 10pt;
+    line-height: 1.55;
+  }
+
+  .resume-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 2px solid #233b62;
+  }
+
+  .resume-identity {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    min-width: 0;
+  }
+
+  .resume-photo,
+  .resume-monogram {
+    width: 66px;
+    height: 66px;
+    flex: 0 0 66px;
+    border-radius: 0.35rem;
+    object-fit: cover;
+  }
+
+  .resume-monogram {
+    display: grid;
+    place-items: center;
+    color: #fff;
+    background: #233b62;
+    font-size: 1.15rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+  }
+
+  .resume-name {
+    color: #15243b;
+    font-size: clamp(1.75rem, 4vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.045em;
+    line-height: 1.08;
+    overflow-wrap: anywhere;
+  }
+
+  .resume-occupation {
+    margin-top: 0.45rem;
+    color: #50627b;
+    font-size: 1.02rem;
+    font-weight: 500;
+    letter-spacing: 0.01em;
+  }
+
+  .resume-contact {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.25rem;
+    color: #46566d;
+    font-size: 0.78rem;
+    font-style: normal;
+  }
+
+  .resume-contact a,
+  .resume-contact > span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    min-width: 0;
+    overflow-wrap: anywhere;
+  }
+
+  .resume-contact a {
+    text-decoration: none;
+  }
+
+  .resume-contact a:hover {
+    color: #254c83;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .resume-contact svg {
+    width: 0.88rem;
+    height: 0.88rem;
+    flex: 0 0 auto;
+    color: #315d91;
+    stroke-width: 1.8;
+  }
+
+  .resume-section {
+    margin-top: 1.65rem;
+  }
+
+  .resume-section-title {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding-bottom: 0.45rem;
+    border-bottom: 1px solid #dce3ed;
+    color: #233b62;
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.13em;
+    text-transform: uppercase;
+  }
+
+  .resume-section-title svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 1.8;
+  }
+
+  .resume-education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.15rem;
+    padding-top: 0.95rem;
+  }
+
+  .resume-education-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
+  .resume-education-heading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .resume-education-heading h3 {
+    color: #1c2a3e;
+    font-size: 0.96rem;
+    font-weight: 650;
+    line-height: 1.4;
+  }
+
+  .resume-qualification {
+    margin-top: 0.12rem;
+    color: #46566d;
+    font-size: 0.87rem;
+  }
+
+  .resume-date {
+    flex: 0 0 auto;
+    color: #5e6f84;
+    font-size: 0.78rem;
+    font-weight: 600;
+    white-space: nowrap;
+  }
+
+  .resume-description {
+    margin-top: 0.45rem;
+    color: #39485c;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    white-space: pre-line;
+  }
+}
+
 @media print {
+  @page {
+    size: A4;
+    margin: 0;
+  }
+
+  html,
+  body {
+    width: 210mm;
+    min-width: 210mm;
+    background: #fff !important;
+    background-image: none !important;
+  }
+
   .no-print {
     display: none !important;
+  }
+
+  #resume-view {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0;
+    padding: 19mm 20mm;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    print-color-adjust: exact;
+    -webkit-print-color-adjust: exact;
+  }
+
+  .resume-section,
+  .resume-education-list {
+    break-inside: auto;
+    page-break-inside: auto;
+  }
+
+  .resume-education-entry {
+    break-inside: avoid;
+    page-break-inside: avoid;
   }
 }
