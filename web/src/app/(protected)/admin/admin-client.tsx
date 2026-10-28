@@ -52,7 +52,7 @@ export function AdminClient() {
                 <BadgeCheck className="size-5 text-emerald-500" />
               </CardHeader>
               <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-                <CardTitle className="text-base">Profile directory</CardTitle>
+                <CardTitle className="text-xl">Profile directory</CardTitle>
                 <CardDescription className="mt-2 max-w-sm leading-6">Search submissions, open detailed profiles, and manage each person’s information.</CardDescription>
                 <Link href="/profiles" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   View submissions <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
@@ -66,7 +66,7 @@ export function AdminClient() {
                 <ShieldCheck className="size-5 text-teal-600" />
               </CardHeader>
               <CardContent className="px-6 pb-6 sm:px-7 sm:pb-7">
-                <CardTitle className="text-base">Review & export</CardTitle>
+                <CardTitle className="text-xl">Review & export</CardTitle>
                 <CardDescription className="mt-2 max-w-sm leading-6">Open a resume view to get a closer look, then export a polished PDF or DOCX.</CardDescription>
                 <Link href="/profiles" className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-primary">
                   Explore profiles <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
