@@ -85,7 +85,7 @@ export function ProfilesClient() {
           </div>
         ) : (
           <>
-            <Table className="min-w-[760px]">
+            <Table className="min-w-190">
               <TableHeader className="[&_tr]:border-slate-100 [&_th]:h-12 [&_th]:px-5 [&_th]:text-[10px] [&_th]:font-semibold [&_th]:uppercase [&_th]:tracking-[0.13em] [&_th]:text-slate-400">
                 <TableRow className="bg-slate-50/70 hover:bg-slate-50/70">
                   <TableHead>Name</TableHead>
@@ -100,7 +100,7 @@ export function ProfilesClient() {
                   <TableRow key={p.id} className="group hover:bg-indigo-50/30">
                     <TableCell className="px-5 py-4">
                       <Link className="flex items-center gap-3 font-semibold text-slate-800 hover:text-primary" href={`/profiles/${p.id}`}>
-                        <span className="flex size-9 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-50 to-violet-100 text-xs font-bold text-indigo-700">
+                        <span className="flex size-9 items-center justify-center rounded-xl bg-linear-to-br from-indigo-50 to-violet-100 text-xs font-bold text-indigo-700">
                           {p.info.firstName.charAt(0)}{p.info.lastName.charAt(0)}
                         </span>
                         {p.info.firstName} {p.info.lastName}
